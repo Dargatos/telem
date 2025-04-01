@@ -12,7 +12,7 @@ ChartLineOutputAdapter.type = 'ChartLineOutputAdapter'
 ChartLineOutputAdapter.MAX_ENTRIES = 50
 ChartLineOutputAdapter.X_TICK = 10
 
-function ChartLineOutputAdapter:constructor (win, filter, bg, fg, maxEntries)
+function ChartLineOutputAdapter:constructor (win, filter, bg, fg, maxEntries, min, max)
     self:super('constructor')
 
     self:cacheable()
@@ -30,6 +30,8 @@ function ChartLineOutputAdapter:constructor (win, filter, bg, fg, maxEntries)
     self.fg = fg or win.getTextColor() or colors.white
     self.MAX_ENTRIES = maxEntries or self.MAX_ENTRIES
 
+    self.min = min or nil
+    self.max = max or nil
     self:register()
 end
 
@@ -141,6 +143,14 @@ function ChartLineOutputAdapter:render ()
 
         actualmin = actualmin - minrange / 2
         actualmax = actualmax + minrange / 2
+    end
+    
+    if 
+        self.min then actualmin = self.min
+    end
+    
+    if 
+        self.max then actualmax = self.max 
     end
     
     self.plotter:clear(self.bg)
